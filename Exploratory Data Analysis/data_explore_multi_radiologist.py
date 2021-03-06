@@ -34,10 +34,12 @@ for entry in unique_25:
 
     print("currently on entry: "+ entry)
     unique_rads = [] # unique radiologists for this specific scan
+    current_abnormalities = [] # tuple list storing abnormality and radiologist
     #iterate through entire csv
     for row in csv_file:
         # check if this row matches entry considering currently 
         if row[0]==entry:
+            current_abnormalities.append([row[3],row[2]])
             #check if radiologist is in list of radiologists 
             if row[3] not in unique_rads:
                 unique_rads.append(row[3])
@@ -45,7 +47,18 @@ for entry in unique_25:
             else:
                 #this means the same radiologist is identifying multiple from the same scan
                 print("more than one abnormality detected from radiologist: "+row[3])
-    print(unique_rads)
+    print("abnormalities found: "+str(current_abnormalities))
+    print("unique radiologists: "+str(unique_rads))
+
+    findings = []
+    #now we compare the findings of first radiologist to all others 
+    for radiologist in unique_rads:
+        for each in current_abnormalities:
+            if each[0] == radiologist:
+                findings.append(each[1])
+        print("findings from radioloist: "+str(radiologist)+" is: "+str(findings))
+        findings = [] 
+
     unique_rads = [] # resetting radiologists array 
 
 # ideas to show differences by radiologist:
