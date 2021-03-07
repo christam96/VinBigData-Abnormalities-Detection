@@ -39,7 +39,7 @@ for entry in unique_25:
     for row in csv_file:
         # check if this row matches entry considering currently 
         if row[0]==entry:
-            current_abnormalities.append([row[3],row[2]])
+            current_abnormalities.append([row[3],int(row[2])])
             #check if radiologist is in list of radiologists 
             if row[3] not in unique_rads:
                 unique_rads.append(row[3])
@@ -51,13 +51,29 @@ for entry in unique_25:
     print("unique radiologists: "+str(unique_rads))
 
     findings = []
+    old_findings = []
     #now we compare the findings of first radiologist to all others 
     for radiologist in unique_rads:
         for each in current_abnormalities:
             if each[0] == radiologist:
                 findings.append(each[1])
         print("findings from radioloist: "+str(radiologist)+" is: "+str(findings))
-        findings = [] 
+
+        #check if findings is same as previous value
+        print(sorted(old_findings))
+        print(sorted(findings))
+        if len(old_findings) >0:
+            if sorted(old_findings) == sorted(findings):
+                print("two radiologists agreed")
+            else:
+                print("two radiologists disagreed")
+        else:
+            print("first radiologist abnormalities found")
+
+        #save old value
+        old_findings = findings
+
+        findings = [] #reset findings
 
     unique_rads = [] # resetting radiologists array 
 
