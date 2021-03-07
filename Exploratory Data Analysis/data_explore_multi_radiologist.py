@@ -25,10 +25,10 @@ print("number of unique entries: "+str(len(unique)))
 print("number of non-unique entries: "+str(len(non_unique)))
 
 # can loop through unique ones identifies
-unique_25 = unique[0:5] #first 25 unique entries 
+unique_25 = unique[5:10] #first 25 unique entries 
 print(unique_25)
 
-consensus_ctr = 0
+disagreement_ctr = 0
 
 for entry in unique_25:
     csv_file = csv.reader(open('train.csv', "r"), delimiter=",") # reset csv
@@ -79,11 +79,13 @@ for entry in unique_25:
         findings = [] #reset findings
 
         if bool_consensus == 0:
-            consensus_ctr = consensus_ctr+1
+            disagreement_ctr = disagreement_ctr+1
+            print("there was disagreement on this scan********************************************")
+            break # stop looking at radiologists for this scan
         bool_consensus = 1 
 
     unique_rads = [] # resetting radiologists array 
-print("out of " +str(len(unique_25))+ " samples, "+str(consensus_ctr)+" had consensus among radiologists")
+print("out of " +str(len(unique_25))+ " samples, "+str(disagreement_ctr)+" had disagreement among radiologists")
 
 # ideas to show differences by radiologist:
     #-> check how many samples have unanimous agreement between radiologists
