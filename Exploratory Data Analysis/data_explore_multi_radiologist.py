@@ -28,6 +28,8 @@ print("number of non-unique entries: "+str(len(non_unique)))
 unique_25 = unique[0:5] #first 25 unique entries 
 print(unique_25)
 
+consensus_ctr = 0
+
 for entry in unique_25:
     csv_file = csv.reader(open('train.csv', "r"), delimiter=",") # reset csv
     header = next(csv_file) #skip first line
@@ -52,7 +54,8 @@ for entry in unique_25:
 
     findings = []
     old_findings = []
-    #now we compare the findings of first radiologist to all others 
+    bool_consensus = 1 
+    #comapre radiologist findings
     for radiologist in unique_rads:
         for each in current_abnormalities:
             if each[0] == radiologist:
@@ -62,22 +65,28 @@ for entry in unique_25:
         #check if findings is same as previous value
         print(sorted(old_findings))
         print(sorted(findings))
-        if len(old_findings) >0:
+        if len(old_findings) > 0: #cant compare first radiologist to no one before them!
             if sorted(old_findings) == sorted(findings):
                 print("two radiologists agreed")
             else:
                 print("two radiologists disagreed")
+                bool_consensus=0
         else:
             print("first radiologist abnormalities found")
 
-        #save old value
-        old_findings = findings
-
+        
+        old_findings = findings #save old value
         findings = [] #reset findings
 
+        if bool_consensus == 0:
+            consensus_ctr = consensus_ctr+1
+        bool_consensus = 1 
+
     unique_rads = [] # resetting radiologists array 
+print("out of " +str(len(unique_25))+ " samples, "+str(consensus_ctr)+" had consensus among radiologists")
 
 # ideas to show differences by radiologist:
-    #-> number of things identified in scan by each radiologist (count how many entries from same R) 
+    #-> check how many samples have unanimous agreement between radiologists
+    #-> check difference in ROIs between rads
 
 
